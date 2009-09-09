@@ -6,44 +6,7 @@ class BibleGatewayError < StandardError; end
 class BibleGateway
   GATEWAY_URL = "http://www.biblegateway.com"
   
-  def self.versions
-    TRANSLATIONS.keys
-  end
-  
-  attr_accessor :version
-  
-  def initialize(translation = :king_james_version)
-    self.version = translation
-  end
-  
-  def version=(translation)
-    raise BibleGatewayError, 'Unsupported version' unless TRANSLATIONS.keys.include? translation
-    @version = translation
-  end
-  
-  def lookup(passage)
-    doc = Nokogiri::HTML(open(passage_url(passage)))
-    scrape_passage(doc)
-  end  
-
-  def passage_url(passage)
-    URI.escape "#{GATEWAY_URL}/passage/?search=#{passage}&version=#{TRANSLATIONS[version]}"
-  end
-
-  def scrape_passage(doc)
-    title = doc.css('h2')[0].content
-    segment = doc.at('div.result-text-style-normal')
-    segment.search('sup.xref').remove # remove cross reference and footnote links
-    segment.search("div.crossrefs").remove # remove cross references and footnotes
-    segment.search('sup.versenum').each do |span|
-      text = span.content
-      span.swap "<sup>#{text}</sup>"
-    end
-    content = segment.inner_html.gsub('<p></p>', '').gsub(/<!--.*?-->/, '').strip
-    {:title => title, :content => content }
-  end
-  
-  TRANSLATIONS = { 
+  VERSIONS = { 
     :new_international_version => "NIV",
     :new_american_standard_bible => "NASB",
     :the_message => "MSG",
@@ -65,4 +28,42 @@ class BibleGateway
     :new_international_version_uk => "NIVUK",
     :todays_new_international_version => "TNIV",
   }
+  
+  def self.versions
+    VERSIONS.keys
+  end
+  
+  attr_accessor :version
+  
+  def initialize(version = :king_james_version)
+    self.version = version
+  end
+  
+  def version=(version)
+    raise BibleGatewayError, 'Unsupported version' unless VERSIONS.keys.include? version
+    @version = version
+  end
+
+  def lookup(passage)
+    doc = Nokogiri::HTML(open(passage_url(passage)))
+    scrape_passage(doc)
+  end  
+
+  private
+    def passage_url(passage)
+      URI.escape "#{GATEWAY_URL}/passage/?search=#{passage}&version=#{VERSIONS[version]}"
+    end
+
+    def scrape_passage(doc)
+      title = doc.css('h2')[0].content
+      segment = doc.at('div.result-text-style-normal')
+      segment.search('sup.xref').remove # remove cross reference and footnote links
+      segment.search("div.crossrefs").remove # remove cross references and footnotes
+      segment.search('sup.versenum').each do |span|
+        text = span.content
+        span.swap "<sup>#{text}</sup>"
+      end
+      content = segment.inner_html.gsub('<p></p>', '').gsub(/<!--.*?-->/, '').strip
+      {:title => title, :content => content }
+    end
 end
