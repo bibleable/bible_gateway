@@ -1,6 +1,26 @@
 = bible_gateway
 
-Description goes here.
+An unofficial 'API' for BibleGateway.com.
+
+== SYNOPSIS:
+
+  BibleGateway.versions # available versions
+  
+  b = BibleGateway.new # defaults to :king_james_version, but can be initialized to different version
+  b.version = :english_standard_version
+  b.lookup('John 1:1') # => "<h4>John 1</h4>\n<h5>The Word Became Flesh</h5> <sup>1</sup> In the beginning was the Word, and the Word was with God, and the Word was God."
+
+== TODO
+
+* Add other versions that are available
+
+== REQUIREMENTS:
+
+* nokogiri
+
+== INSTALL:
+
+* sudo gem install gdagley-bible_gateway
 
 == Note on Patches/Pull Requests
  
@@ -16,3 +36,4 @@ Description goes here.
 == Copyright
 
 Copyright (c) 2009 Geoffrey Dagley. See LICENSE for details.
+Most Bible translations are copyrighted.  Please see BibleGateway.com for more information.
