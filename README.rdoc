@@ -2,6 +2,9 @@
 
 An unofficial 'API' for BibleGateway.com.
 
+Source: http://github.com/gdagley/bible_gateway
+Build status: http://runcoderun.com/gdagley/bible_gateway
+
 == SYNOPSIS:
 
   BibleGateway.versions # available versions
