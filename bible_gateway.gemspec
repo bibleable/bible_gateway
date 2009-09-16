@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bible_gateway}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Geoffrey Dagley"]
-  s.date = %q{2009-09-08}
+  s.date = %q{2009-09-16}
   s.email = %q{gdagley@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "bible_gateway.gemspec",
      "lib/bible_gateway.rb",
      "spec/bible_gateway_spec.rb",
      "spec/fixtures/john_1_1.html",
