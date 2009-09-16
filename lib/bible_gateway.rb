@@ -58,7 +58,7 @@ class BibleGateway
       title = doc.css('h2')[0].content
       segment = doc.at('div.result-text-style-normal')
       segment.search('sup.xref').remove # remove cross reference links
-      segment.search('sup.footnotes').remove # remove footnote links
+      segment.search('sup.footnote').remove # remove footnote links
       segment.search("div.crossrefs").remove # remove cross references
       segment.search("div.footnotes").remove # remove footnotes
       segment.search('sup.versenum').each do |span|
