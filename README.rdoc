@@ -16,6 +16,7 @@ Build status: http://runcoderun.com/gdagley/bible_gateway
 == TODO
 
 * Add other versions that are available
+* Fix failing spec on Ruby 1.9.1 spec (although the gem still works, there is something up with the spec.)
 
 == REQUIREMENTS:
 
