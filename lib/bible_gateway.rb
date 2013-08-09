@@ -65,7 +65,7 @@ class BibleGateway
       segment.search("div.crossrefs").remove # remove cross references
       segment.search("div.footnotes").remove # remove footnotes
       segment.search("span.text").each do |span|
-        text = span.content
+        text = span.inner_html
         span.swap text
       end
 

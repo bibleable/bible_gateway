@@ -68,6 +68,26 @@ describe BibleGateway do
         content.should include("For God so loved the world,that he gave his only Son, that whoever believes in him should not perish but have eternal life.")
       end
     end
+
+    context "multiple chapters" do
+      before do
+        stub_get "http://www.biblegateway.com/passage/?search=Psalm%201-5&version=ESV", "psalm_1_5.html"
+      end
+
+      it "should find the passage title" do
+        title = BibleGateway.new(:english_standard_version).lookup("Psalm 1-5")[:title]
+        title.should == "Psalm 1-5 (English Standard Version)"
+      end
+
+      it "should find and clean the passage content" do
+        content = BibleGateway.new(:english_standard_version).lookup("Psalm 1-5")[:content]
+        content.should include("<h3>The Way of the Righteous and the Wicked</h3>")
+        content.should include("<span class=\"chapternum\">1 </span>")
+        content.should include("<h3>Save Me, O My God</h3>")
+        content.should include("<span class=\"chapternum\">1 </span>")
+        content.should include("For you are not a God who delights in wickedness;")
+      end
+    end
   end
 
 end
