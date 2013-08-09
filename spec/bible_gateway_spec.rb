@@ -1,11 +1,12 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+# coding: utf-8
+require "spec_helper"
 
 describe BibleGateway do
-  it 'should have a list of versions' do
+  it "should have a list of versions" do
     BibleGateway.versions.should_not be_empty
   end
 
-  describe 'setting the version' do
+  describe "setting the version" do
     it "should have a default version" do
       gateway = BibleGateway.new
       gateway.version.should == :king_james_version
@@ -33,21 +34,39 @@ describe BibleGateway do
   end
 
   describe "lookup" do
-    it "should find the passage title" do
-      stub_get "http://www.biblegateway.com/passage/?search=John%201:1&version=ESV", 'john_1_1.html'
-      title = BibleGateway.new(:english_standard_version).lookup("John 1:1")[:title]
-      title.should == "John 1:1 (English Standard Version)"
+    context "verse" do
+      before do
+        stub_get "http://www.biblegateway.com/passage/?search=John%201:1&version=ESV", "john_1_1.html"
+      end
+
+      it "should find the passage title" do
+        title = BibleGateway.new(:english_standard_version).lookup("John 1:1")[:title]
+        title.should == "John 1:1 (English Standard Version)"
+      end
+
+      it "should find and clean the passage content" do
+        content = BibleGateway.new(:english_standard_version).lookup("John 1:1")[:content]
+        content.should include("<h3>The Word Became Flesh</h3>")
+        content.should include("In the beginning was the Word, and the Word was with God, and the Word was God.")
+      end
     end
 
-    it "should find and clean the passage content" do
-      passage = "<h4>John 1</h4>\n<h5>The Word Became Flesh</h5> <sup>1</sup> In the beginning was the Word, and the Word was with God, and the Word was God."
-      stub_get "http://www.biblegateway.com/passage/?search=John%201:1&version=ESV", 'john_1_1.html'
-      result = BibleGateway.new(:english_standard_version).lookup("John 1:1")[:content]
-      result.should include("<h4>John 1</h4>")
-      result.should include("<h5>The Word Became Flesh</h5>")
-      result.should include("<sup>1</sup>")
-      result.should include("In the beginning was the Word, and the Word was with God, and the Word was God.")
-      # result.should == passage # there are hidden characters in here that I need to track down
+    context "chapter" do
+      before do
+        stub_get "http://www.biblegateway.com/passage/?search=John%203&version=ESV", "john_3.html"
+      end
+
+      it "should find the passage title" do
+        title = BibleGateway.new(:english_standard_version).lookup("John 3")[:title]
+        title.should == "John 3 (English Standard Version)"
+      end
+
+      it "should find and clean the passage content" do
+        content = BibleGateway.new(:english_standard_version).lookup("John 3")[:content]
+        content.should include("<h3>You Must Be Born Again</h3>")
+        content.should include("<h3>For God So Loved the World</h3>")
+        content.should include("For God so loved the world,that he gave his only Son, that whoever believes in him should not perish but have eternal life.")
+      end
     end
   end
 

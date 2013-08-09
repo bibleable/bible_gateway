@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'bible_gateway/version'
 require 'open-uri'
 require 'nokogiri'
@@ -56,15 +57,21 @@ class BibleGateway
     end
 
     def scrape_passage(doc)
-      title = doc.css('h2')[0].content
+      container = doc.css('div#content')
+      title = container.css('h1')[0].content
       segment = doc.at('div.result-text-style-normal')
-      segment.search('sup.xref').remove # remove cross reference links
+      segment.search('sup.crossreference').remove # remove cross reference links
       segment.search('sup.footnote').remove # remove footnote links
       segment.search("div.crossrefs").remove # remove cross references
       segment.search("div.footnotes").remove # remove footnotes
-      segment.search('sup.versenum').each do |span|
+      segment.search("span.text").each do |span|
         text = span.content
-        span.swap "<sup>#{text}</sup>"
+        span.swap text
+      end
+
+      segment.search('sup.versenum').each do |sup|
+        text = sup.content
+        sup.swap "<sup>#{text}</sup>"
       end
       content = segment.inner_html.gsub('<p></p>', '').gsub(/<!--.*?-->/, '').strip
       {:title => title, :content => content }
