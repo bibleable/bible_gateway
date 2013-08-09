@@ -1,12 +1,13 @@
+require 'bible_gateway/version'
 require 'open-uri'
 require 'nokogiri'
 
 class BibleGatewayError < StandardError; end
-  
+
 class BibleGateway
   GATEWAY_URL = "http://www.biblegateway.com"
-  
-  VERSIONS = { 
+
+  VERSIONS = {
     :new_international_version => "NIV",
     :new_american_standard_bible => "NASB",
     :the_message => "MSG",
@@ -28,17 +29,17 @@ class BibleGateway
     :new_international_version_uk => "NIVUK",
     :todays_new_international_version => "TNIV",
   }
-  
+
   def self.versions
     VERSIONS.keys
   end
-  
+
   attr_accessor :version
-  
+
   def initialize(version = :king_james_version)
     self.version = version
   end
-  
+
   def version=(version)
     raise BibleGatewayError, 'Unsupported version' unless VERSIONS.keys.include? version
     @version = version
@@ -47,7 +48,7 @@ class BibleGateway
   def lookup(passage)
     doc = Nokogiri::HTML(open(passage_url(passage)))
     scrape_passage(doc)
-  end  
+  end
 
   private
     def passage_url(passage)
