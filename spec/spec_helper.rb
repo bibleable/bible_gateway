@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'webmock/rspec'
 require 'bible_gateway'
 
 RSpec.configure do |config|
@@ -15,7 +14,6 @@ def fixture_file(filename)
 end
 
 def stub_get(url, filename, status=200)
-  options = {:body => fixture_file(filename)}
-  options.merge!({:status => status})
-  stub_request(:get, url).to_return(options)
+  response = Typhoeus::Response.new(:code => status, :body => fixture_file(filename))
+  Typhoeus.stub(url).and_return(response)
 end

@@ -1,7 +1,7 @@
 # coding: utf-8
 require 'bible_gateway/version'
-require 'open-uri'
 require 'nokogiri'
+require 'typhoeus'
 
 class BibleGatewayError < StandardError; end
 
@@ -47,7 +47,8 @@ class BibleGateway
   end
 
   def lookup(passage)
-    doc = Nokogiri::HTML(open(passage_url(passage)))
+    response = Typhoeus.get(passage_url(passage), followlocation: true)
+    doc = Nokogiri::HTML(response.body)
     scrape_passage(doc)
   end
 
