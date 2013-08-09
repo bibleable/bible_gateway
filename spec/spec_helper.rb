@@ -1,14 +1,12 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'fakeweb'
+require 'webmock/rspec'
 require 'bible_gateway'
 
 RSpec.configure do |config|
 
 end
-
-FakeWeb.allow_net_connect = false
 
 def fixture_file(filename)
   return '' if filename == ''
@@ -16,8 +14,8 @@ def fixture_file(filename)
   File.read(file_path)
 end
 
-def stub_get(url, filename, status=nil)
-  options = {:response => fixture_file(filename)}
-  options.merge!({:status => status}) unless status.nil?
-  FakeWeb.register_uri(:get, url, options)
+def stub_get(url, filename, status=200)
+  options = {:body => fixture_file(filename)}
+  options.merge!({:status => status})
+  stub_request(:get, url).to_return(options)
 end
