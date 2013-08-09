@@ -1,5 +1,9 @@
 # BibleGateway
 
+Travis CI:
+[![Build Status](https://travis-ci.org/gdagley/bible_gateway.png?branch=master)](https://travis-ci.org/gdagley/bible_gateway)
+1.9.2, 1.9.3, 2.0.0
+
 An unofficial 'API' for BibleGateway.com.
 
 ## Installation
