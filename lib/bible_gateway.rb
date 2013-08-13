@@ -29,6 +29,7 @@ class BibleGateway
     :worldwide_english_new_testament => "WE",
     :new_international_version_uk => "NIVUK",
     :todays_new_international_version => "TNIV",
+    :world_english_bible => "WEB",
   }
 
   def self.versions
