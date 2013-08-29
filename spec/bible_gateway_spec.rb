@@ -1,4 +1,3 @@
-# coding: utf-8
 require "spec_helper"
 
 describe BibleGateway do
@@ -35,10 +34,6 @@ describe BibleGateway do
 
   describe "lookup" do
     context "verse" do
-      before do
-        stub_get "http://www.biblegateway.com/passage/?search=John%201:1&version=ESV", "john_1_1.html"
-      end
-
       it "should find the passage title" do
         title = BibleGateway.new(:english_standard_version).lookup("John 1:1")[:title]
         title.should == "John 1:1 (English Standard Version)"
@@ -52,10 +47,6 @@ describe BibleGateway do
     end
 
     context "chapter" do
-      before do
-        stub_get "http://www.biblegateway.com/passage/?search=John%203&version=ESV", "john_3.html"
-      end
-
       it "should find the passage title" do
         title = BibleGateway.new(:english_standard_version).lookup("John 3")[:title]
         title.should == "John 3 (English Standard Version)"
@@ -70,10 +61,6 @@ describe BibleGateway do
     end
 
     context "multiple chapters" do
-      before do
-        stub_get "http://www.biblegateway.com/passage/?search=Psalm%201-5&version=ESV", "psalm_1_5.html"
-      end
-
       it "should find the passage title" do
         title = BibleGateway.new(:english_standard_version).lookup("Psalm 1-5")[:title]
         title.should == "Psalm 1-5 (English Standard Version)"
