@@ -2,6 +2,7 @@
 require 'bible_gateway/version'
 require 'nokogiri'
 require 'typhoeus'
+require 'uri'
 
 class BibleGatewayError < StandardError; end
 
