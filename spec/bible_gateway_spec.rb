@@ -37,7 +37,7 @@ describe BibleGateway do
     context "verse" do
       it "should find the passage title" do
         title = BibleGateway.new(:english_standard_version).lookup("John 1:1")[:title]
-        title.should == "John 1:1 (English Standard Version)"
+        title.should == "John 1:1"
       end
 
       it "should find and clean the passage content" do
@@ -50,7 +50,7 @@ describe BibleGateway do
     context "chapter" do
       it "should find the passage title" do
         title = BibleGateway.new(:english_standard_version).lookup("John 3")[:title]
-        title.should == "John 3 (English Standard Version)"
+        title.should == "John 3"
       end
 
       it "should find and clean the passage content" do
@@ -64,7 +64,7 @@ describe BibleGateway do
     context "multiple chapters" do
       it "should find the passage title" do
         title = BibleGateway.new(:english_standard_version).lookup("Psalm 1-5")[:title]
-        title.should == "Psalm 1-5 (English Standard Version)"
+        title.should == "Psalm 1-5"
       end
 
       it "should find and clean the passage content" do

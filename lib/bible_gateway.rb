@@ -62,9 +62,9 @@ class BibleGateway
     end
 
     def scrape_passage(doc)
-      container = doc.css('div#content')
-      title = container.css('h1')[0].content
-      segment = doc.at('div.result-text-style-normal')
+      container = doc.css('div.container')
+      title = container.css('div.passage-details h1')[0].content.strip
+      segment = doc.at('div.passage-wrap')
       segment.search('sup.crossreference').remove # remove cross reference links
       segment.search('sup.footnote').remove # remove footnote links
       segment.search("div.crossrefs").remove # remove cross references
