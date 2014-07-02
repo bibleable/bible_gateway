@@ -1,4 +1,3 @@
-# coding: utf-8
 require 'bible_gateway/version'
 require 'nokogiri'
 require 'typhoeus'
