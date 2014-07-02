@@ -57,7 +57,7 @@ describe BibleGateway do
         content = BibleGateway.new(:english_standard_version).lookup("John 3")[:content]
         content.should include("<h3>You Must Be Born Again</h3>")
         content.should include("<h3>For God So Loved the World</h3>")
-        content.should include("For God so loved the world,that he gave his only Son, that whoever believes in him should not perish but have eternal life.")
+        content.should include("For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.")
       end
     end
 
