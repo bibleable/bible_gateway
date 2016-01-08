@@ -32,6 +32,12 @@ class BibleGateway
     :worldwide_english_new_testament => "WE",
     :wycliffe_new_testament => "WYC",
     :youngs_literal_translation => "YLT",
+
+    # French
+    :bible_du_semeur => "BDS",
+    :louis_segond => "LSG",
+    :nouvelle_edition_de_geneve => "NEG1979",
+    :segond_21 => "SG21",
   }
 
   def self.versions
