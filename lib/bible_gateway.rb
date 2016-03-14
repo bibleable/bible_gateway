@@ -38,6 +38,10 @@ class BibleGateway
     :louis_segond => "LSG",
     :nouvelle_edition_de_geneve => "NEG1979",
     :segond_21 => "SG21",
+
+    #Chinese
+    :chinese_new_version_simplified => "CNVS",
+    :chinese_union_version_simplified => "CUVS",
   }
 
   def self.versions
