@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "bible_gateway"
   spec.version       = BibleGateway::VERSION
   spec.authors       = ["Geoffrey Dagley"]
-  spec.email         = ["gdagley@gmail.com"]
+  spec.email         = ["gdagley@gmail.com", "bibleableproject@gmail.com"]
   spec.description   = %q{An unofficial 'API' for BibleGateway.com.}
   spec.summary       = %q{An unofficial 'API' for BibleGateway.com.}
   spec.homepage      = "https://github.com/gdagley/bible_gateway"
