@@ -6,7 +6,7 @@ require 'uri'
 class BibleGatewayError < StandardError; end
 
 class BibleGateway
-  GATEWAY_URL = "http://www.biblegateway.com"
+  GATEWAY_URL = "http://classic.biblegateway.com"
 
   VERSIONS = {
     :american_standard_version => "ASV",
