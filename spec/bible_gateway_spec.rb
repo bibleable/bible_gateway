@@ -34,6 +34,13 @@ describe BibleGateway do
   end
 
   describe "lookup" do
+    context "text only" do 
+      it "should find the scripture text" do
+        text = BibleGateway.new(:english_standard_version).lookup("John 1:1")[:text]
+        expect(text).to eq("The Word Became Flesh1 In the beginning was the Word, and the Word was with God, and the Word was God.")
+      end
+    end
+
     context "verse" do
       it "should find the passage title" do
         title = BibleGateway.new(:english_standard_version).lookup("John 1:1")[:title]

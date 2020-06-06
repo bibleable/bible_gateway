@@ -74,16 +74,23 @@ class BibleGateway
       segment.search('sup.footnote').remove # remove footnote links
       segment.search("div.crossrefs").remove # remove cross references
       segment.search("div.footnotes").remove # remove footnotes
+      # extract text only from scripture
+      text = ""
       segment.search("span.text").each do |span|
-        text = span.inner_html
-        span.swap text
+        text += span.inner_text
       end
 
-      segment.search('sup.versenum').each do |sup|
-        text = sup.content
-        sup.swap "<sup>#{text}</sup>"
+      segment.search("span.text").each do |span|
+        html_content = span.inner_html
+        span.swap html_content
       end
+      
+      segment.search('sup.versenum').each do |sup|
+        html_content = sup.content
+        sup.swap "<sup>#{html_content}</sup>"
+      end
+
       content = segment.inner_html.gsub('<p></p>', '').gsub(/<!--.*?-->/, '').strip
-      {:title => title, :content => content }
+      {:title => title, :content => content, :text => text }
     end
 end
