@@ -19,9 +19,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "nokogiri", "1.10.9"
-  spec.add_dependency "typhoeus", "1.3.1"
+  spec.add_dependency "typhoeus", "1.4.0"
 
-  spec.add_development_dependency "bundler", "2.1.4"
+  spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "13.0.1"
   spec.add_development_dependency "rspec", "3.9.0"
 end
