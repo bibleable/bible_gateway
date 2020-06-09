@@ -2,7 +2,7 @@
 
 Travis CI:
 [![Build Status](https://travis-ci.org/bibleable/bible_gateway.png?branch=master)](https://travis-ci.org/bibleable/bible_gateway)
-1.9.3, 2.0.0, 2.1.1
+1.9.3, 2.0.0, 2.1.1, 2.6.6
 
 An unofficial 'API' for BibleGateway.com. 
 
@@ -27,10 +27,6 @@ Or install it yourself as:
     b = BibleGateway.new # defaults to :king_james_version, but can be initialized to different version
     b.version = :english_standard_version
     b.lookup('John 1:1') # => "<h4>John 1</h4>\n<h5>The Word Became Flesh</h5> <sup>1</sup> In the beginning was the Word, and the Word was with God, and the Word was God."
-
-## Todo
-
-* Add other versions that are available
 
 ## Contributing
 

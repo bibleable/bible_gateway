@@ -6,7 +6,8 @@ require 'uri'
 class BibleGatewayError < StandardError; end
 
 class BibleGateway
-  GATEWAY_URL = "http://classic.biblegateway.com"
+  CLASSIC_GATEWAY_URL = "http://classic.biblegateway.com"
+  GATEWAY_URL = "http://biblegateway.com"
 
   VERSIONS = {
     :american_standard_version => "ASV",
@@ -67,6 +68,39 @@ class BibleGateway
     end
 
     def scrape_passage(doc)
+
+      container = doc.css('div.passage-text')
+
+      # TODO make sure you check for nil
+      title = container.css("div.version-NIV.result-text-style-normal.text-html h3 span")[0].content.strip if container.css("div.version-NIV.result-text-style-normal.text-html h3 span")[0] != nil
+
+      segment = doc.at('div.passage-text')
+
+      segment.search('sup.crossreference').remove # remove cross reference links
+      segment.search('sup.footnote').remove # remove footnote links
+      segment.search("div.crossrefs").remove # remove cross references
+      segment.search("div.footnotes").remove # remove footnotes
+
+      text = ""
+      segment.search("span.text").each do |span|
+        text += span.inner_text
+      end
+
+      segment.search("span.text").each do |span|
+        html_content = span.inner_html
+        span.swap html_content
+      end
+      
+      segment.search('sup.versenum').each do |sup|
+        html_content = sup.content
+        sup.swap "<sup>#{html_content}</sup>"
+      end
+
+      content = segment.inner_html.gsub('<p></p>', '').gsub(/<!--.*?-->/, '').strip
+      {:title => title, :content => content, :text => text }
+    end
+
+    def old_way_scrape_passage(doc)
       container = doc.css('div.container')
       title = container.css('div.passage-details h1')[0].content.strip
       segment = doc.at('div.passage-wrap')
