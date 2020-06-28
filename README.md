@@ -2,7 +2,7 @@
 
 Travis CI:
 [![Build Status](https://travis-ci.org/bibleable/bible_gateway.png?branch=master)](https://travis-ci.org/bibleable/bible_gateway)
-1.9.3, 2.0.0, 2.1.1, 2.6.6
+1.9.3, 2.0.0, 2.1.10, 2.2.10, 2.3.8, 2.4.10, 2.5.8, 2.6.6, 2.7.1
 
 An unofficial 'API' for BibleGateway.com. 
 
@@ -22,11 +22,26 @@ Or install it yourself as:
 
 ## Usage
 
-    BibleGateway.versions # available versions
+```
+require 'bible_gateway'
 
-    b = BibleGateway.new # defaults to :king_james_version, but can be initialized to different version
-    b.version = :english_standard_version
-    b.lookup('John 1:1') # => "<h4>John 1</h4>\n<h5>The Word Became Flesh</h5> <sup>1</sup> In the beginning was the Word, and the Word was with God, and the Word was God."
+BibleGateway.versions # available versions
+
+b = BibleGateway.new # defaults to :king_james_version, but can be initialized to different version
+
+b.version = :english_standard_version
+b.lookup('John 1:1') # => "<h4>John 1</h4>\n<h5>The Word Became Flesh</h5> <sup>1</sup> In the beginning was the Word, and the Word was with God, and the Word was God."
+```
+
+## Scraping the old site through old_lookup
+
+```
+require 'bible_gateway'
+
+b = BibleGateway.new # defaults to :king_james_version, but can be initialized to different version
+
+b.old_lookup('John 1:1') # scraping the old site
+```
 
 ## Contributing
 
