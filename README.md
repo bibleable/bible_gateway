@@ -2,7 +2,7 @@
 
 Travis CI:
 [![Build Status](https://travis-ci.org/bibleable/bible_gateway.png?branch=master)](https://travis-ci.org/bibleable/bible_gateway)
-1.9.3, 2.6.6, 2.7.1
+1.9.3, 2.0.0, 2.1.1
 
 An unofficial 'API' for BibleGateway.com. 
 
