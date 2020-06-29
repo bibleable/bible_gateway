@@ -6,9 +6,6 @@ require 'uri'
 class BibleGatewayError < StandardError; end
 
 class BibleGateway
-  CLASSIC_GATEWAY_URL = "http://classic.biblegateway.com"
-  GATEWAY_URL = "http://biblegateway.com"
-
   VERSIONS = {
     :american_standard_version => "ASV",
     :amplified_bible => "AMP",
@@ -59,21 +56,30 @@ class BibleGateway
   def lookup(passage)
     response = Typhoeus.get(passage_url(passage), followlocation: true)
     doc = Nokogiri::HTML(response.body)
-    scrape_passage(doc)
+    scrape_passage(doc, @version)
+  end
+
+  def old_lookup(passage)
+    response = Typhoeus.get(old_passage_url(passage), followlocation: true)
+    doc = Nokogiri::HTML(response.body)
+    old_way_scrape_passage(doc)
   end
 
   private
+    GATEWAY_URL = "http://biblegateway.com"
     def passage_url(passage)
       URI.escape "#{GATEWAY_URL}/passage/?search=#{passage}&version=#{VERSIONS[version]}"
     end
 
-    def scrape_passage(doc)
+    CLASSIC_GATEWAY_URL = "http://classic.biblegateway.com"
+    def old_passage_url(passage)
+      URI.escape "#{CLASSIC_GATEWAY_URL}/passage/?search=#{passage}&version=#{VERSIONS[version]}"
+    end
+
+    def scrape_passage(doc, version)
 
       container = doc.css('div.passage-text')
-
-      # TODO make sure you check for nil
-      title = container.css("div.version-NIV.result-text-style-normal.text-html h3 span")[0].content.strip if container.css("div.version-NIV.result-text-style-normal.text-html h3 span")[0] != nil
-
+      title = container.css("div.version-#{VERSIONS[version]}.result-text-style-normal.text-html h1 span")[0].content.strip if container.css("div.version-#{VERSIONS[version]}.result-text-style-normal.text-html h1")[0] != nil
       segment = doc.at('div.passage-text')
 
       segment.search('sup.crossreference').remove # remove cross reference links
@@ -108,6 +114,7 @@ class BibleGateway
       segment.search('sup.footnote').remove # remove footnote links
       segment.search("div.crossrefs").remove # remove cross references
       segment.search("div.footnotes").remove # remove footnotes
+
       # extract text only from scripture
       text = ""
       segment.search("span.text").each do |span|
