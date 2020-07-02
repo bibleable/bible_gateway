@@ -22,6 +22,8 @@ Or install it yourself as:
 
 ## Usage
 
+    require 'bible_gateway'
+
     BibleGateway.versions # available versions
 
     b = BibleGateway.new # defaults to :king_james_version, but can be initialized to different version
