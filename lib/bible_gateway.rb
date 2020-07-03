@@ -6,6 +6,9 @@ require 'uri'
 class BibleGatewayError < StandardError; end
 
 class BibleGateway
+  GATEWAY_URL = "http://biblegateway.com"
+  CLASSIC_GATEWAY_URL = "http://classic.biblegateway.com"
+
   VERSIONS = {
     :american_standard_version => "ASV",
     :amplified_bible => "AMP",
@@ -66,18 +69,15 @@ class BibleGateway
   end
 
   private
-    GATEWAY_URL = "http://biblegateway.com"
     def passage_url(passage)
-      URI.escape "#{GATEWAY_URL}/passage/?search=#{passage}&version=#{VERSIONS[version]}"
+      "#{GATEWAY_URL}/passage/?search=#{URI.encode_www_form_component(passage)}&version=#{URI.encode_www_form_component(VERSIONS[version])}"
     end
 
-    CLASSIC_GATEWAY_URL = "http://classic.biblegateway.com"
     def old_passage_url(passage)
-      URI.escape "#{CLASSIC_GATEWAY_URL}/passage/?search=#{passage}&version=#{VERSIONS[version]}"
+      "#{CLASSIC_GATEWAY_URL}/passage/?search=#{URI.encode_www_form_component(passage)}&version=#{URI.encode_www_form_component(VERSIONS[version])}"
     end
 
     def scrape_passage(doc, version)
-
       container = doc.css('div.passage-text')
       title = container.css("div.version-#{VERSIONS[version]}.result-text-style-normal.text-html h1 span")[0].content.strip if container.css("div.version-#{VERSIONS[version]}.result-text-style-normal.text-html h1")[0] != nil
       segment = doc.at('div.passage-text')

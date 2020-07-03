@@ -1,5 +1,6 @@
 # coding: utf-8
 require "spec_helper"
+require 'net/ping'
 
 describe BibleGateway do
   it "should have a list of versions" do
@@ -30,6 +31,22 @@ describe BibleGateway do
     it "should raise an exception when changing to unknown version" do
       gateway = BibleGateway.new
       expect {  gateway.version = :unknown_version }.to raise_error(BibleGatewayError)
+    end
+  end
+
+  describe "reachability" do
+    context "biblegateway.com" do
+      it "should reach biblegateway.com" do
+        check = Net::Ping::External.new(BibleGateway::GATEWAY_URL)
+        check.ping?  
+      end
+    end
+
+    context "classic biblegateway.com" do
+      it "should reach classic biblegateway.com" do
+        check = Net::Ping::External.new(BibleGateway::CLASSIC_GATEWAY_URL)
+        check.ping?  
+      end
     end
   end
 
