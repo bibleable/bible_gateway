@@ -28,10 +28,16 @@ describe BibleGateway do
       expect(gateway.version).to eq(:english_standard_version)
     end
 
+    it "should be able to set the chinese version to use" do
+      gateway = BibleGateway.new :chinese_new_version_simplified
+      expect(gateway.version).to eq(:chinese_new_version_simplified)
+    end
+
     it "should raise an exception when changing to unknown version" do
       gateway = BibleGateway.new
       expect {  gateway.version = :unknown_version }.to raise_error(BibleGatewayError)
     end
+
   end
 
   describe "reachability" do
@@ -69,6 +75,11 @@ describe BibleGateway do
         expect(title).to eq("John 1:1")
       end
 
+      it "should find the passage title in chinese_new_version_simplified" do
+        title = BibleGateway.new(:chinese_new_version_simplified).lookup("John 1:1")[:title]
+        expect(title).to eq("约翰福音 1:1")
+      end
+
       it "should find and clean the passage content" do
         content = BibleGateway.new(:english_standard_version).lookup("John 1:1")[:content]
         expect(content).to include("<h3>The Word Became Flesh</h3>")
@@ -91,6 +102,11 @@ describe BibleGateway do
       it "should find the passage title" do
         title = BibleGateway.new(:english_standard_version).lookup("John 3")[:title]
         expect(title).to eq("John 3")
+      end
+
+      it "should find the passage title in chinese_new_version_simplified" do
+        title = BibleGateway.new(:chinese_new_version_simplified).lookup("John 3")[:title]
+        expect(title).to eq("约翰福音 3")
       end
 
       it "should find and clean the passage content" do
