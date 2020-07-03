@@ -6,7 +6,8 @@ require 'uri'
 class BibleGatewayError < StandardError; end
 
 class BibleGateway
-  GATEWAY_URL = "http://classic.biblegateway.com"
+  GATEWAY_URL = "http://biblegateway.com"
+  CLASSIC_GATEWAY_URL = "http://classic.biblegateway.com"
 
   VERSIONS = {
     :american_standard_version => "ASV",
@@ -62,15 +63,54 @@ class BibleGateway
   def lookup(passage)
     response = Typhoeus.get(passage_url(passage), followlocation: true)
     doc = Nokogiri::HTML(response.body)
-    scrape_passage(doc)
+    scrape_passage(doc, @version)
+  end
+
+  def old_lookup(passage)
+    response = Typhoeus.get(old_passage_url(passage), followlocation: true)
+    doc = Nokogiri::HTML(response.body)
+    old_way_scrape_passage(doc)
   end
 
   private
     def passage_url(passage)
-      URI.escape "#{GATEWAY_URL}/passage/?search=#{passage}&version=#{VERSIONS[version]}"
+      "#{GATEWAY_URL}/passage/?search=#{URI.encode_www_form_component(passage)}&version=#{URI.encode_www_form_component(VERSIONS[version])}"
     end
 
-    def scrape_passage(doc)
+    def old_passage_url(passage)
+      "#{CLASSIC_GATEWAY_URL}/passage/?search=#{URI.encode_www_form_component(passage)}&version=#{URI.encode_www_form_component(VERSIONS[version])}"
+    end
+
+    def scrape_passage(doc, version)
+      container = doc.css('div.passage-text')
+      title = container.css("div.version-#{VERSIONS[version]}.result-text-style-normal.text-html h1 span")[0].content.strip if container.css("div.version-#{VERSIONS[version]}.result-text-style-normal.text-html h1")[0] != nil
+      segment = doc.at('div.passage-text')
+
+      segment.search('sup.crossreference').remove # remove cross reference links
+      segment.search('sup.footnote').remove # remove footnote links
+      segment.search("div.crossrefs").remove # remove cross references
+      segment.search("div.footnotes").remove # remove footnotes
+
+      text = ""
+      segment.search("span.text").each do |span|
+        text += span.inner_text
+      end
+
+      segment.search("span.text").each do |span|
+        html_content = span.inner_html
+        span.swap html_content
+      end
+      
+      segment.search('sup.versenum').each do |sup|
+        html_content = sup.content
+        sup.swap "<sup>#{html_content}</sup>"
+      end
+
+      content = segment.inner_html.gsub('<p></p>', '').gsub(/<!--.*?-->/, '').strip
+      {:title => title, :content => content, :text => text }
+    end
+
+    def old_way_scrape_passage(doc)
       container = doc.css('div.container')
       title = container.css('div.passage-details h1')[0].content.strip
       segment = doc.at('div.passage-wrap')
@@ -78,6 +118,7 @@ class BibleGateway
       segment.search('sup.footnote').remove # remove footnote links
       segment.search("div.crossrefs").remove # remove cross references
       segment.search("div.footnotes").remove # remove footnotes
+
       # extract text only from scripture
       text = ""
       segment.search("span.text").each do |span|
