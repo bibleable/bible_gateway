@@ -63,7 +63,7 @@ class BibleGateway
   def lookup(passage)
     response = Typhoeus.get(passage_url(passage), followlocation: true)
     doc = Nokogiri::HTML(response.body)
-    scrape_passage(doc, @version)
+    scrape_passage(doc, @version, passage)
   end
 
   def old_lookup(passage)
@@ -81,9 +81,10 @@ class BibleGateway
       "#{CLASSIC_GATEWAY_URL}/passage/?search=#{URI.encode_www_form_component(passage)}&version=#{URI.encode_www_form_component(VERSIONS[version])}"
     end
 
-    def scrape_passage(doc, version)
+    def scrape_passage(doc, version, passage)
       container = doc.css('div.passage-text')
-      title = container.css("div.version-#{VERSIONS[version]}.result-text-style-normal.text-html h1 span")[0].content.strip if container.css("div.version-#{VERSIONS[version]}.result-text-style-normal.text-html h1")[0] != nil
+      title = doc.css(".dropdown-display-text").first.children.first.text
+      title = passage unless title != nil
       segment = doc.at('div.passage-text')
 
       segment.search('sup.crossreference').remove # remove cross reference links
