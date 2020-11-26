@@ -84,7 +84,7 @@ class BibleGateway
     def scrape_passage(doc, version, passage)
       container = doc.css('div.passage-text')
       title = doc.css(".dropdown-display-text").first.children.first.text
-      title = passage unless title != nil
+      title ||= passage
       segment = doc.at('div.passage-text')
 
       segment.search('sup.crossreference').remove # remove cross reference links
