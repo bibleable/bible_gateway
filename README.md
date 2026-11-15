@@ -1,6 +1,6 @@
 # BibleGateway
 
-An unofficial 'API' for BibleGateway.com. 
+An unofficial 'API' for BibleGateway.com. Please note that you should be aware of copyright and license of each translation. If you are not aware, please read: https://www.biblegateway.com/versions/
 
 ## Installation
 
@@ -58,6 +58,11 @@ This gem needs more contributors! Areas that require help may include: raising i
 2. Build gem by running `gem build bible_gateway.gemspec`
 3. Gem install by running `gem install bible_gateway-X.X.X.gem`. Please replace X.X.X
 4. To test, simply run `rspec`
+
+
+## Friendly reminder
+
+bible_gateway is built to explore how to use scripture responsibly. You can also use `BSB` or ask your AI to generate a snippet of the scripture in respect of the copyright or license of each translation.
 
 ## Copyright
 
